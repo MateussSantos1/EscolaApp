@@ -23,5 +23,67 @@ namespace EscolaApp
         {
             InitializeComponent();
         }
+
+        private void InserirClick(object sender, RoutedEventArgs e)
+        {
+            int id = int.Parse(txtId.Text);
+            string nome = txtNome.Text;
+            string mat = txtMatricula.Text;
+            string email = txtEmail.Text;
+            Aluno t = new Aluno
+            {
+                Id = id,
+                Nome = nome,
+                Matricula = mat,
+                Email = email
+            };
+            NAluno.Inserir(t);
+            ListarClick(sender, e);
+        }
+        private void ListarClick(object sender, RoutedEventArgs e)
+        {
+            listAlunos.ItemsSource = null;
+            listAlunos.ItemsSource = NAluno.Listar();
+        }
+
+        private void AtualizarClick(object sender, RoutedEventArgs e)
+        {
+            int id = int.Parse(txtId.Text);
+            string aluno = txtNome.Text;
+            string mat = txtMatricula.Text;
+            string email = txtEmail.Text;
+            Aluno t = new Aluno
+            {
+                Id = id,
+                Nome = aluno,
+                Matricula = mat,
+                Email = email
+            };
+            NAluno.Atualizar(t);
+            ListarClick(sender, e);
+        }
+
+        private void ExcluirClick(object sender, RoutedEventArgs e)
+        {
+            if (listAlunos.SelectedItem != null)
+            {
+                NAluno.Excluir((Aluno)listAlunos.SelectedItem);
+                ListarClick(sender, e);
+            }
+            else
+                MessageBox.Show("Selecione o Aluno a ser excluída");
+        }
+
+        private void listAlunos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (listAlunos.SelectedItem != null)
+            {
+                Aluno obj = (Aluno)listAlunos.SelectedItem;
+                txtId.Text = obj.Id.ToString();
+                txtNome.Text = obj.Nome;
+                txtMatricula.Text = obj.Matricula;
+                txtEmail.Text = obj.Email;
+            }
+        }
     }
 }
